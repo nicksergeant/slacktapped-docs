@@ -1,0 +1,236 @@
+    <!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="ExDoc v0.13.1">
+    <title>Slacktapped.Search.Untappd – Slacktapped v1.0.0</title>
+    <link rel="stylesheet" href="dist/app-7e84850c37.css" />
+    
+    <script src="dist/sidebar_items.js"></script>
+  </head>
+  <body data-type="modules">
+    <script>if(localStorage.getItem('night-mode')) document.body.className += ' night-mode';</script>
+
+    <div class="main">
+<button class="sidebar-toggle">
+  <i class="icon-menu"></i>
+</button>
+<section class="sidebar">
+
+  
+  <a href="readme.html" class="sidebar-projectLink">
+    <div class="sidebar-projectDetails">
+      <h1 class="sidebar-projectName">
+        Slacktapped
+      </h1>
+      <h2 class="sidebar-projectVersion">
+        v1.0.0
+      </h2>
+    </div>
+    
+  </a>
+
+  <div class="sidebar-search">
+    <i class="icon-search"></i>
+    <input type="text" class="sidebar-searchInput" placeholder="search" autocomplete="off" />
+  </div>
+
+  <ul class="sidebar-listNav">
+    <li><a id="extras-list" href="#full-list">Pages</a></li>
+
+    
+      <li><a id="modules-list" href="#full-list">Modules</a></li>
+    
+
+    
+
+    
+  </ul>
+
+  <ul id="full-list" class="sidebar-fullList"></ul>
+  <div class="sidebar-noResults"></div>
+</section>
+
+<section class="content">
+  <div class="content-outer">
+    <div id="content" class="content-inner">
+
+
+      <h1>
+        <small class="visible-xs">Slacktapped v1.0.0</small>
+        Slacktapped.Search.Untappd
+        
+        
+          <a href="https://github.com/nicksergeant/slacktapped/blob/master/lib/search/untappd.ex#L1" title="View Source" class="view-source" rel="help">
+            <i class="icon-code"></i>
+          </a>
+        
+      </h1>
+
+      
+
+      
+        <section id="summary" class="details-list">
+          <h1 class="section-heading">
+            <a class="hover-link" href="#summary">
+              <i class="icon-link"></i>
+            </a>
+            Summary
+          </h1>
+          
+
+          
+  <div class="summary-functions summary">
+    <h2>
+      <a href="#functions">Functions</a>
+    </h2>
+    <div class="summary-row">
+  <div class="summary-signature">
+    <a href="#handle_search/1">handle_search(params)</a>
+  </div>
+  
+    <div class="summary-synopsis"><p>Handles a Slack slash-command search for a beer on Untappd</p>
+</div>
+  
+</div>
+
+  </div>
+
+
+          
+
+          
+
+        </section>
+      
+
+      
+
+      
+        <section id="functions" class="details-list">
+          <h1 class="section-heading">
+            <a class="hover-link" href="#functions">
+              <i class="icon-link"></i>
+            </a>
+            Functions
+          </h1>
+          <div class="detail" id="handle_search/1">
+  <div class="detail-header">
+    <a href="#handle_search/1" class="detail-link" title="Link to this function">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">handle_search(params)</span>
+    
+      <a href="https://github.com/nicksergeant/slacktapped/blob/master/lib/search/untappd.ex#L86" class="view-source" rel="help" title="View Source">
+       <i class="icon-code"></i>
+     </a>
+    
+    
+  </div>
+  
+  <section class="docstring">
+    <p>Handles a Slack slash-command search for a beer on Untappd.</p>
+<h2 id="handle_search/1-examples" class="section-heading">
+  <a href="#handle_search/1-examples" class="hover-link"><i class="icon-link"></i></a>
+  Examples
+</h2>
+
+<p>Request with a good token:</p>
+<pre><code class="iex elixir">iex&gt; Slacktapped.Search.Untappd.handle_search(%{
+...&gt;   &quot;channel_id&quot; =&gt; &quot;C2147483705&quot;,
+...&gt;   &quot;channel_name&quot; =&gt; &quot;test&quot;,
+...&gt;   &quot;command&quot; =&gt; &quot;/untappd&quot;,
+...&gt;   &quot;response_url&quot; =&gt; &quot;https://hooks.slack.com/commands/1234/5678&quot;,
+...&gt;   &quot;team_domain&quot; =&gt; &quot;example&quot;,
+...&gt;   &quot;team_id&quot; =&gt; &quot;T0001&quot;,
+...&gt;   &quot;text&quot; =&gt; &quot;dogfish 60&quot;,
+...&gt;   &quot;token&quot; =&gt; &quot;abc123&quot;,
+...&gt;   &quot;user_id&quot; =&gt; &quot;U2147483697&quot;,
+...&gt;   &quot;user_name&quot; =&gt; &quot;Steve&quot;
+...&gt; })
+{:ok,
+  %{
+    &quot;attachments&quot; =&gt; [
+      %{
+        &quot;color&quot; =&gt; &quot;#FFCF0B&quot;,
+        &quot;footer&quot; =&gt; &quot;&lt;http://path/to/brewery|Dogfish Head Craft Brewery&gt;&quot;,
+        &quot;image_url&quot; =&gt; &quot;https://untappd.akamaized.net/site/beer_logos/beer-3952_a5c9d_sm.jpeg&quot;,
+        &quot;text&quot; =&gt; &quot;IPA - American, 6% ABV\nAverage rating: 3.898&quot;,
+        &quot;title&quot; =&gt; &quot;60 Minute IPA&quot;,
+        &quot;title_link&quot; =&gt; &quot;https://untappd.com/b/dogfish-head-craft-brewery-60-minute-ipa/3952&quot;
+      }
+    ],
+    &quot;icon_url&quot; =&gt; &quot;https://slacktapped.s3.amazonaws.com/icon.jpg&quot;,
+    &quot;response_type&quot; =&gt; &quot;ephemeral&quot;,
+    &quot;username&quot; =&gt; &quot;Untappd&quot;
+  }
+}</code></pre>
+<p>Bad tokens are dropped:</p>
+<pre><code class="iex elixir">iex&gt; Slacktapped.Search.Untappd.handle_search(%{&quot;token&quot; =&gt; &quot;nope&quot;})
+{:error, %{}}</code></pre>
+<p>No results:</p>
+<pre><code class="iex elixir">iex&gt; Slacktapped.Search.Untappd.handle_search(%{&quot;token&quot; =&gt; &quot;abc123&quot;, &quot;text&quot; =&gt; &quot;fdsafdsa&quot;})
+{:ok,
+  %{
+    &quot;attachments&quot; =&gt; [
+      %{
+        &quot;color&quot; =&gt; &quot;#FFCF0B&quot;,
+        &quot;text&quot; =&gt; &quot;No results.&quot;
+      }
+    ],
+    &quot;icon_url&quot; =&gt; &quot;https://slacktapped.s3.amazonaws.com/icon.jpg&quot;,
+    &quot;response_type&quot; =&gt; &quot;ephemeral&quot;,
+    &quot;username&quot; =&gt; &quot;Untappd&quot;
+  }
+}</code></pre>
+<p>Respond to channel publicly:</p>
+<pre><code class="iex elixir">iex&gt; Slacktapped.Search.Untappd.handle_search(%{
+...&gt;   &quot;token&quot; =&gt; &quot;abc123&quot;,
+...&gt;   &quot;text&quot; =&gt; &quot;fdsafdsa -public&quot;
+...&gt; })
+{:ok,
+  %{
+    &quot;attachments&quot; =&gt; [
+      %{
+        &quot;color&quot; =&gt; &quot;#FFCF0B&quot;,
+        &quot;text&quot; =&gt; &quot;No results.&quot;
+      }
+    ],
+    &quot;icon_url&quot; =&gt; &quot;https://slacktapped.s3.amazonaws.com/icon.jpg&quot;,
+    &quot;response_type&quot; =&gt; &quot;in_channel&quot;,
+    &quot;username&quot; =&gt; &quot;Untappd&quot;
+  }
+}</code></pre>
+
+  </section>
+</div>
+
+        </section>
+      
+
+      
+
+      
+          <footer class="footer">
+        <p>
+          <span class="line">
+            Built using
+            <a href="https://github.com/elixir-lang/ex_doc" title="ExDoc" rel="help" target="_blank">ExDoc</a> (v0.13.1),
+          </span>
+          <span class="line">
+            designed by
+            <a href="https://twitter.com/dignifiedquire" target="_blank" title="@dignifiedquire">Friedel Ziegelmayer</a>.
+            </span>
+        </p>
+        <button class="night-mode-toggle" />
+      </footer>
+    </div>
+  </div>
+</section>
+</div>
+  <script src="dist/app-95540a96e6.js"></script>
+  </body>
+</html>
+

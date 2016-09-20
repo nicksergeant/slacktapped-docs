@@ -1,0 +1,639 @@
+    <!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="ExDoc v0.13.1">
+    <title>Slacktapped.Checkins – Slacktapped v1.0.0</title>
+    <link rel="stylesheet" href="dist/app-7e84850c37.css" />
+    
+    <script src="dist/sidebar_items.js"></script>
+  </head>
+  <body data-type="modules">
+    <script>if(localStorage.getItem('night-mode')) document.body.className += ' night-mode';</script>
+
+    <div class="main">
+<button class="sidebar-toggle">
+  <i class="icon-menu"></i>
+</button>
+<section class="sidebar">
+
+  
+  <a href="readme.html" class="sidebar-projectLink">
+    <div class="sidebar-projectDetails">
+      <h1 class="sidebar-projectName">
+        Slacktapped
+      </h1>
+      <h2 class="sidebar-projectVersion">
+        v1.0.0
+      </h2>
+    </div>
+    
+  </a>
+
+  <div class="sidebar-search">
+    <i class="icon-search"></i>
+    <input type="text" class="sidebar-searchInput" placeholder="search" autocomplete="off" />
+  </div>
+
+  <ul class="sidebar-listNav">
+    <li><a id="extras-list" href="#full-list">Pages</a></li>
+
+    
+      <li><a id="modules-list" href="#full-list">Modules</a></li>
+    
+
+    
+
+    
+  </ul>
+
+  <ul id="full-list" class="sidebar-fullList"></ul>
+  <div class="sidebar-noResults"></div>
+</section>
+
+<section class="content">
+  <div class="content-outer">
+    <div id="content" class="content-inner">
+
+
+      <h1>
+        <small class="visible-xs">Slacktapped v1.0.0</small>
+        Slacktapped.Checkins
+        
+        
+          <a href="https://github.com/nicksergeant/slacktapped/blob/master/lib/checkins.ex#L1" title="View Source" class="view-source" rel="help">
+            <i class="icon-code"></i>
+          </a>
+        
+      </h1>
+
+      
+
+      
+        <section id="summary" class="details-list">
+          <h1 class="section-heading">
+            <a class="hover-link" href="#summary">
+              <i class="icon-link"></i>
+            </a>
+            Summary
+          </h1>
+          
+
+          
+  <div class="summary-functions summary">
+    <h2>
+      <a href="#functions">Functions</a>
+    </h2>
+    <div class="summary-row">
+  <div class="summary-signature">
+    <a href="#is_eligible_checkin_post/1">is_eligible_checkin_post(checkin)</a>
+  </div>
+  
+    <div class="summary-synopsis"><p>Determines if a checkin is eligible to be posted to Slack</p>
+</div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#parse_checkin/1">parse_checkin(checkin)</a>
+  </div>
+  
+    <div class="summary-synopsis"><p>Parses a checkin into an attachment for Slack</p>
+</div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#process_checkin/1">process_checkin(checkin)</a>
+  </div>
+  
+    <div class="summary-synopsis"><p>Processes a checkin for use in a Slack post</p>
+</div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#report_checkin_type/1">report_checkin_type(arg)</a>
+  </div>
+  
+    <div class="summary-synopsis"><p>Reports that a checkin was posted to Slack by setting a Redis key. There are
+two possible Redis keys indicating a post was made</p>
+</div>
+  
+</div>
+
+  </div>
+
+
+          
+
+          
+
+        </section>
+      
+
+      
+
+      
+        <section id="functions" class="details-list">
+          <h1 class="section-heading">
+            <a class="hover-link" href="#functions">
+              <i class="icon-link"></i>
+            </a>
+            Functions
+          </h1>
+          <div class="detail" id="is_eligible_checkin_post/1">
+  <div class="detail-header">
+    <a href="#is_eligible_checkin_post/1" class="detail-link" title="Link to this function">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">is_eligible_checkin_post(checkin)</span>
+    
+      <a href="https://github.com/nicksergeant/slacktapped/blob/master/lib/checkins.ex#L84" class="view-source" rel="help" title="View Source">
+       <i class="icon-code"></i>
+     </a>
+    
+    
+  </div>
+  
+  <section class="docstring">
+    <p>Determines if a checkin is eligible to be posted to Slack.</p>
+<p>Checkin is ineligible to post if:</p>
+<ol>
+<li>There is a Redis key indicating that this checkin was posted under this
+   instance, and had an image with it.
+</li>
+<li>There is a Redis key indicating that this checkin was posted under this
+   instance, and had no image with it, but the checkin we see now still does
+   not have an image.
+</li>
+</ol>
+<h2 id="is_eligible_checkin_post/1-examples" class="section-heading">
+  <a href="#is_eligible_checkin_post/1-examples" class="hover-link"><i class="icon-link"></i></a>
+  Examples
+</h2>
+
+<p>A checkin that was not already posted:</p>
+<pre><code class="iex elixir">iex&gt; Slacktapped.Checkins.is_eligible_checkin_post(%{&quot;checkin_id&quot; =&gt; 9985})
+{:ok, %{&quot;checkin_id&quot; =&gt; 9985}}</code></pre>
+<p>A checkin that was already posted, and had an image:</p>
+<pre><code class="iex elixir">iex&gt; Slacktapped.Checkins.is_eligible_checkin_post(%{&quot;checkin_id&quot; =&gt; 9988})
+{:error, %{&quot;checkin_id&quot; =&gt; 9988}}</code></pre>
+<p>A checkin that was already posted and had no image, and we do not currently
+have an image:</p>
+<pre><code class="iex elixir">iex&gt; Slacktapped.Checkins.is_eligible_checkin_post(%{&quot;beer&quot; =&gt; %{}, &quot;checkin_id&quot; =&gt; 5566})
+{:error, %{&quot;beer&quot; =&gt; %{}, &quot;checkin_id&quot; =&gt; 5566}}</code></pre>
+<p>A checkin that was already posted and had no image, and we now have an
+image:</p>
+<pre><code class="iex elixir">iex&gt; Slacktapped.Checkins.is_eligible_checkin_post(%{
+...&gt;   &quot;beer&quot; =&gt; %{},
+...&gt;   &quot;checkin_id&quot; =&gt; 5566,
+...&gt;   &quot;media&quot; =&gt; %{
+...&gt;     &quot;items&quot; =&gt; [
+...&gt;       %{
+...&gt;         &quot;photo&quot; =&gt; %{
+...&gt;           &quot;photo_id&quot; =&gt; 987,
+...&gt;           &quot;photo_img_lg&quot; =&gt; &quot;http://path/to/beer/image&quot;
+...&gt;         }
+...&gt;       }
+...&gt;     ]
+...&gt;   }
+...&gt; })
+{:ok, %{
+  &quot;beer&quot; =&gt; %{},
+  &quot;checkin_id&quot; =&gt; 5566,
+  &quot;media&quot; =&gt; %{
+    &quot;items&quot; =&gt; [
+      %{
+        &quot;photo&quot; =&gt; %{
+          &quot;photo_id&quot; =&gt; 987,
+          &quot;photo_img_lg&quot; =&gt; &quot;http://path/to/beer/image&quot;
+        }
+      }
+    ]
+  }
+}}</code></pre>
+
+  </section>
+</div>
+<div class="detail" id="parse_checkin/1">
+  <div class="detail-header">
+    <a href="#parse_checkin/1" class="detail-link" title="Link to this function">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">parse_checkin(checkin)</span>
+    
+      <a href="https://github.com/nicksergeant/slacktapped/blob/master/lib/checkins.ex#L402" class="view-source" rel="help" title="View Source">
+       <i class="icon-code"></i>
+     </a>
+    
+    
+  </div>
+  
+  <section class="docstring">
+    <p>Parses a checkin into an attachment for Slack.</p>
+<h2 id="parse_checkin/1-examples" class="section-heading">
+  <a href="#parse_checkin/1-examples" class="hover-link"><i class="icon-link"></i></a>
+  Examples
+</h2>
+
+<p>A typical checkin with a rating and comment:</p>
+<pre><code class="iex elixir">iex&gt; Slacktapped.Checkins.parse_checkin(%{
+...&gt;   &quot;attachments&quot; =&gt; [],
+...&gt;   &quot;user&quot; =&gt; %{
+...&gt;     &quot;user_name&quot; =&gt; &quot;nicksergeant&quot;,
+...&gt;     &quot;user_avatar&quot; =&gt; &quot;http://path/to/user/avatar&quot;
+...&gt;   },
+...&gt;   &quot;beer&quot; =&gt; %{
+...&gt;     &quot;bid&quot; =&gt; 123,
+...&gt;     &quot;beer_abv&quot; =&gt; 4.5,
+...&gt;     &quot;beer_label&quot; =&gt; &quot;http://path/to/beer/label&quot;,
+...&gt;     &quot;beer_name&quot; =&gt; &quot;IPA&quot;,
+...&gt;     &quot;beer_slug&quot; =&gt; &quot;two-lake-ipa&quot;,
+...&gt;     &quot;beer_style&quot; =&gt; &quot;American IPA&quot;
+...&gt;   },
+...&gt;   &quot;brewery&quot; =&gt; %{
+...&gt;     &quot;brewery_id&quot; =&gt; 1,
+...&gt;     &quot;brewery_label&quot; =&gt; &quot;http://path/to/brewery/label&quot;,
+...&gt;     &quot;brewery_name&quot; =&gt; &quot;Two Lake&quot;
+...&gt;   },
+...&gt;   &quot;checkin_comment&quot; =&gt; &quot;Lovely!&quot;,
+...&gt;   &quot;checkin_id&quot; =&gt; 567,
+...&gt;   &quot;rating_score&quot; =&gt; 3.5
+...&gt; })
+{:ok,
+  %{
+    &quot;author_icon&quot; =&gt; &quot;http://path/to/user/avatar&quot;,
+    &quot;author_link&quot; =&gt; &quot;https://untappd.com/user/nicksergeant&quot;,
+    &quot;author_name&quot; =&gt; &quot;nicksergeant&quot;,
+    &quot;color&quot; =&gt; &quot;#FFCF0B&quot;,
+    &quot;fallback&quot; =&gt; &quot;nicksergeant is drinking IPA.&quot;,
+    &quot;footer&quot; =&gt; &quot;&lt;https://untappd.com/brewery/1|Two Lake&gt;&quot;,
+    &quot;footer_icon&quot; =&gt; &quot;http://path/to/brewery/label&quot;,
+    &quot;image_url&quot; =&gt; &quot;http://path/to/beer/label&quot;,
+    &quot;mrkdwn_in&quot; =&gt; [&quot;text&quot;],
+    &quot;text&quot; =&gt; &quot;&quot; &lt;&gt;
+      &quot;&lt;https://untappd.com/user/nicksergeant|nicksergeant&gt; is drinking &quot; &lt;&gt;
+      &quot;&lt;https://untappd.com/b/two-lake-ipa/123|IPA&gt; &quot; &lt;&gt;
+      &quot;(American IPA, 4.5% ABV).&quot; &lt;&gt;
+      &quot;\nThey rated it a 3.5 and said:\n&gt;Lovely!\n&quot; &lt;&gt;
+      &quot;&lt;https://untappd.com/user/nicksergeant/checkin/567|Toast »&gt;&quot;,
+    &quot;title&quot; =&gt; &quot;IPA&quot;,
+    &quot;title_link&quot; =&gt; &quot;https://untappd.com/b/two-lake-ipa/123&quot;
+  }
+}</code></pre>
+<p>A checkin without a rating:</p>
+<pre><code class="iex elixir">iex&gt; Slacktapped.Checkins.parse_checkin(%{
+...&gt;   &quot;attachments&quot; =&gt; [],
+...&gt;   &quot;checkin_comment&quot; =&gt; &quot;Lovely!&quot;
+...&gt; })
+{:ok,
+  %{
+    &quot;author_icon&quot; =&gt; nil,
+    &quot;author_link&quot; =&gt; &quot;https://untappd.com/user/&quot;,
+    &quot;author_name&quot; =&gt; nil,
+    &quot;color&quot; =&gt; &quot;#FFCF0B&quot;,
+    &quot;fallback&quot; =&gt; &quot; is drinking .&quot;,
+    &quot;footer&quot; =&gt; &quot;&lt;https://untappd.com/brewery/|&gt;&quot;,
+    &quot;footer_icon&quot; =&gt; nil,
+    &quot;image_url&quot; =&gt; nil,
+    &quot;mrkdwn_in&quot; =&gt; [&quot;text&quot;],
+    &quot;text&quot; =&gt; &quot;&quot; &lt;&gt;
+      &quot;&lt;https://untappd.com/user/|&gt; is drinking &quot; &lt;&gt;
+      &quot;&lt;https://untappd.com/b//|&gt; (, % ABV).&quot; &lt;&gt;
+      &quot;\nThey said:\n&gt;Lovely!\n&quot; &lt;&gt;
+      &quot;&lt;https://untappd.com/user//checkin/|Toast »&gt;&quot;,
+    &quot;title&quot; =&gt; nil,
+    &quot;title_link&quot; =&gt; &quot;https://untappd.com/b//&quot;
+  }
+}</code></pre>
+<p>A checkin without a comment:</p>
+<pre><code class="iex elixir">iex&gt; Slacktapped.Checkins.parse_checkin(%{&quot;rating_score&quot; =&gt; 1.5})
+{:ok,
+  %{
+    &quot;author_icon&quot; =&gt; nil,
+    &quot;author_link&quot; =&gt; &quot;https://untappd.com/user/&quot;,
+    &quot;author_name&quot; =&gt; nil,
+    &quot;color&quot; =&gt; &quot;#FFCF0B&quot;,
+    &quot;fallback&quot; =&gt; &quot; is drinking .&quot;,
+    &quot;footer&quot; =&gt; &quot;&lt;https://untappd.com/brewery/|&gt;&quot;,
+    &quot;footer_icon&quot; =&gt; nil,
+    &quot;image_url&quot; =&gt; nil,
+    &quot;mrkdwn_in&quot; =&gt; [&quot;text&quot;],
+    &quot;text&quot; =&gt; &quot;&quot; &lt;&gt;
+      &quot;&lt;https://untappd.com/user/|&gt; is drinking &quot; &lt;&gt;
+      &quot;&lt;https://untappd.com/b//|&gt; (, % ABV).&quot; &lt;&gt;
+      &quot;\nThey rated it a 1.5.\n&quot; &lt;&gt;
+      &quot;&lt;https://untappd.com/user//checkin/|Toast »&gt;&quot;,
+    &quot;title&quot; =&gt; nil,
+    &quot;title_link&quot; =&gt; &quot;https://untappd.com/b//&quot;
+  }
+}</code></pre>
+<p>A checkin without a comment or rating:</p>
+<pre><code class="iex elixir">iex&gt; Slacktapped.Checkins.parse_checkin(%{})
+{:ok,
+  %{
+    &quot;author_icon&quot; =&gt; nil,
+    &quot;author_link&quot; =&gt; &quot;https://untappd.com/user/&quot;,
+    &quot;author_name&quot; =&gt; nil,
+    &quot;color&quot; =&gt; &quot;#FFCF0B&quot;,
+    &quot;fallback&quot; =&gt; &quot; is drinking .&quot;,
+    &quot;footer&quot; =&gt; &quot;&lt;https://untappd.com/brewery/|&gt;&quot;,
+    &quot;footer_icon&quot; =&gt; nil,
+    &quot;image_url&quot; =&gt; nil,
+    &quot;mrkdwn_in&quot; =&gt; [&quot;text&quot;],
+    &quot;text&quot; =&gt; &quot;&quot; &lt;&gt;
+      &quot;&lt;https://untappd.com/user/|&gt; is drinking &quot; &lt;&gt;
+      &quot;&lt;https://untappd.com/b//|&gt; (, % ABV).\n&quot; &lt;&gt;
+      &quot;&lt;https://untappd.com/user//checkin/|Toast »&gt;&quot;,
+    &quot;title&quot; =&gt; nil,
+    &quot;title_link&quot; =&gt; &quot;https://untappd.com/b//&quot;
+  }
+}</code></pre>
+<p>A checkin with a rating of 0:</p>
+<pre><code class="iex elixir">iex&gt; Slacktapped.Checkins.parse_checkin(%{&quot;rating_score&quot; =&gt; 0})
+{:ok,
+  %{
+    &quot;author_icon&quot; =&gt; nil,
+    &quot;author_link&quot; =&gt; &quot;https://untappd.com/user/&quot;,
+    &quot;author_name&quot; =&gt; nil,
+    &quot;color&quot; =&gt; &quot;#FFCF0B&quot;,
+    &quot;fallback&quot; =&gt; &quot; is drinking .&quot;,
+    &quot;footer&quot; =&gt; &quot;&lt;https://untappd.com/brewery/|&gt;&quot;,
+    &quot;footer_icon&quot; =&gt; nil,
+    &quot;image_url&quot; =&gt; nil,
+    &quot;mrkdwn_in&quot; =&gt; [&quot;text&quot;],
+    &quot;text&quot; =&gt; &quot;&quot; &lt;&gt;
+      &quot;&lt;https://untappd.com/user/|&gt; is drinking &quot; &lt;&gt;
+      &quot;&lt;https://untappd.com/b//|&gt; (, % ABV).\n&quot; &lt;&gt;
+      &quot;&lt;https://untappd.com/user//checkin/|Toast »&gt;&quot;,
+    &quot;title&quot; =&gt; nil,
+    &quot;title_link&quot; =&gt; &quot;https://untappd.com/b//&quot;
+  }
+}</code></pre>
+<p>A checkin with a rating of 0 and a comment:</p>
+<pre><code class="iex elixir">iex&gt; Slacktapped.Checkins.parse_checkin(%{
+...&gt;  &quot;checkin_comment&quot; =&gt; &quot;Yuck.&quot;,
+...&gt;  &quot;rating_score&quot; =&gt; 0
+...&gt;})
+{:ok,
+  %{
+    &quot;author_icon&quot; =&gt; nil,
+    &quot;author_link&quot; =&gt; &quot;https://untappd.com/user/&quot;,
+    &quot;author_name&quot; =&gt; nil,
+    &quot;color&quot; =&gt; &quot;#FFCF0B&quot;,
+    &quot;fallback&quot; =&gt; &quot; is drinking .&quot;,
+    &quot;footer&quot; =&gt; &quot;&lt;https://untappd.com/brewery/|&gt;&quot;,
+    &quot;footer_icon&quot; =&gt; nil,
+    &quot;image_url&quot; =&gt; nil,
+    &quot;mrkdwn_in&quot; =&gt; [&quot;text&quot;],
+    &quot;text&quot; =&gt; &quot;&quot; &lt;&gt;
+      &quot;&lt;https://untappd.com/user/|&gt; is drinking &quot; &lt;&gt;
+      &quot;&lt;https://untappd.com/b//|&gt; (, % ABV).&quot; &lt;&gt;
+      &quot;\nThey said:\n&gt;Yuck.\n&quot; &lt;&gt;
+      &quot;&lt;https://untappd.com/user//checkin/|Toast »&gt;&quot;,
+    &quot;title&quot; =&gt; nil,
+    &quot;title_link&quot; =&gt; &quot;https://untappd.com/b//&quot;
+  }
+}</code></pre>
+<p>A checkin with an image:</p>
+<pre><code class="iex elixir">iex&gt; Slacktapped.Checkins.parse_checkin(%{
+...&gt;   &quot;media&quot; =&gt; %{
+...&gt;     &quot;items&quot; =&gt; [
+...&gt;       %{
+...&gt;         &quot;photo&quot; =&gt; %{
+...&gt;           &quot;photo_id&quot; =&gt; 987,
+...&gt;           &quot;photo_img_lg&quot; =&gt; &quot;http://path/to/beer/image&quot;
+...&gt;         }
+...&gt;       }
+...&gt;     ]
+...&gt;   }
+...&gt; })
+{:ok,
+  %{
+    &quot;author_icon&quot; =&gt; nil,
+    &quot;author_link&quot; =&gt; &quot;https://untappd.com/user/&quot;,
+    &quot;author_name&quot; =&gt; nil,
+    &quot;color&quot; =&gt; &quot;#FFCF0B&quot;,
+    &quot;fallback&quot; =&gt; &quot; is drinking .&quot;,
+    &quot;footer&quot; =&gt; &quot;&lt;https://untappd.com/brewery/|&gt;&quot;,
+    &quot;footer_icon&quot; =&gt; nil,
+    &quot;image_url&quot; =&gt; &quot;http://path/to/beer/image&quot;,
+    &quot;mrkdwn_in&quot; =&gt; [&quot;text&quot;],
+    &quot;text&quot; =&gt; &quot;&quot; &lt;&gt;
+      &quot;&lt;https://untappd.com/user/|&gt; is drinking &quot; &lt;&gt;
+      &quot;&lt;https://untappd.com/b//|&gt; (, % ABV).\n&quot; &lt;&gt;
+      &quot;&lt;https://untappd.com/user//checkin/|Toast »&gt;&quot;,
+    &quot;title&quot; =&gt; nil,
+    &quot;title_link&quot; =&gt; &quot;https://untappd.com/b//&quot;
+  }
+}</code></pre>
+<p>A checkin with a venue:</p>
+<pre><code class="iex elixir">iex&gt; Slacktapped.Checkins.parse_checkin(%{
+...&gt;   &quot;attachments&quot; =&gt; [],
+...&gt;   &quot;venue&quot; =&gt; %{
+...&gt;     &quot;venue_id&quot; =&gt; 789,
+...&gt;     &quot;venue_name&quot; =&gt; &quot;Venue Name&quot;,
+...&gt;     &quot;venue_slug&quot; =&gt; &quot;venue-slug&quot;
+...&gt;   }
+...&gt; })
+{:ok,
+  %{
+    &quot;author_icon&quot; =&gt; nil,
+    &quot;author_link&quot; =&gt; &quot;https://untappd.com/user/&quot;,
+    &quot;author_name&quot; =&gt; nil,
+    &quot;color&quot; =&gt; &quot;#FFCF0B&quot;,
+    &quot;fallback&quot; =&gt; &quot; is drinking .&quot;,
+    &quot;footer&quot; =&gt; &quot;&lt;https://untappd.com/brewery/|&gt;&quot;,
+    &quot;footer_icon&quot; =&gt; nil,
+    &quot;image_url&quot; =&gt; nil,
+    &quot;mrkdwn_in&quot; =&gt; [&quot;text&quot;],
+    &quot;text&quot; =&gt; &quot;&quot; &lt;&gt;
+      &quot;&lt;https://untappd.com/user/|&gt; is drinking &quot; &lt;&gt;
+      &quot;&lt;https://untappd.com/b//|&gt; (, % ABV) &quot; &lt;&gt;
+      &quot;at &lt;https://untappd.com/v/venue-slug/789|Venue Name&gt;.\n&quot; &lt;&gt;
+      &quot;&lt;https://untappd.com/user//checkin/|Toast »&gt;&quot;,
+    &quot;title&quot; =&gt; nil,
+    &quot;title_link&quot; =&gt; &quot;https://untappd.com/b//&quot;
+  }
+}</code></pre>
+<p>A checkin with an image, with a previously-posted checkin with no image:</p>
+<pre><code class="iex elixir">iex&gt; Slacktapped.Checkins.parse_checkin(%{
+...&gt;   &quot;checkin_id&quot; =&gt; 5566,
+...&gt;   &quot;media&quot; =&gt; %{
+...&gt;     &quot;items&quot; =&gt; [
+...&gt;       %{
+...&gt;         &quot;photo&quot; =&gt; %{
+...&gt;           &quot;photo_id&quot; =&gt; 987,
+...&gt;           &quot;photo_img_lg&quot; =&gt; &quot;http://path/to/beer/image&quot;
+...&gt;         }
+...&gt;       }
+...&gt;     ]
+...&gt;   }
+...&gt; })
+{:ok,
+  %{
+    &quot;author_icon&quot; =&gt; nil,
+    &quot;author_link&quot; =&gt; &quot;https://untappd.com/user/&quot;,
+    &quot;author_name&quot; =&gt; nil,
+    &quot;color&quot; =&gt; &quot;#FFCF0B&quot;,
+    &quot;fallback&quot; =&gt; &quot; is drinking .&quot;,
+    &quot;footer&quot; =&gt; &quot;&lt;https://untappd.com/brewery/|&gt;&quot;,
+    &quot;footer_icon&quot; =&gt; nil,
+    &quot;image_url&quot; =&gt; &quot;http://path/to/beer/image&quot;,
+    &quot;mrkdwn_in&quot; =&gt; [&quot;text&quot;],
+    &quot;text&quot; =&gt; &quot;&quot;,
+    &quot;title&quot; =&gt; nil,
+    &quot;title_link&quot; =&gt; &quot;https://untappd.com/b//&quot;
+  }
+}</code></pre>
+<p>The default Untappd beer label is ignored:</p>
+<pre><code class="iex elixir">iex&gt; Slacktapped.Checkins.parse_checkin(%{
+...&gt;   &quot;attachments&quot; =&gt; [],
+...&gt;   &quot;beer&quot; =&gt; %{
+...&gt;     &quot;beer_label&quot; =&gt; &quot;https://untappd.akamaized.net/site/assets/images/temp/badge-beer-default.png&quot;
+...&gt;   }
+...&gt; })
+{:ok,
+  %{
+    &quot;author_icon&quot; =&gt; nil,
+    &quot;author_link&quot; =&gt; &quot;https://untappd.com/user/&quot;,
+    &quot;author_name&quot; =&gt; nil,
+    &quot;color&quot; =&gt; &quot;#FFCF0B&quot;,
+    &quot;fallback&quot; =&gt; &quot; is drinking .&quot;,
+    &quot;footer&quot; =&gt; &quot;&lt;https://untappd.com/brewery/|&gt;&quot;,
+    &quot;footer_icon&quot; =&gt; nil,
+    &quot;image_url&quot; =&gt; &quot;&quot;,
+    &quot;mrkdwn_in&quot; =&gt; [&quot;text&quot;],
+    &quot;text&quot; =&gt; &quot;&quot; &lt;&gt;
+      &quot;&lt;https://untappd.com/user/|&gt; is drinking &quot; &lt;&gt;
+      &quot;&lt;https://untappd.com/b//|&gt; (, % ABV).\n&quot; &lt;&gt;
+      &quot;&lt;https://untappd.com/user//checkin/|Toast »&gt;&quot;,
+    &quot;title&quot; =&gt; nil,
+    &quot;title_link&quot; =&gt; &quot;https://untappd.com/b//&quot;
+  }
+}</code></pre>
+
+  </section>
+</div>
+<div class="detail" id="process_checkin/1">
+  <div class="detail-header">
+    <a href="#process_checkin/1" class="detail-link" title="Link to this function">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">process_checkin(checkin)</span>
+    
+      <a href="https://github.com/nicksergeant/slacktapped/blob/master/lib/checkins.ex#L14" class="view-source" rel="help" title="View Source">
+       <i class="icon-code"></i>
+     </a>
+    
+    
+  </div>
+  
+  <section class="docstring">
+    <p>Processes a checkin for use in a Slack post:</p>
+<ol>
+<li>Verifies the checkin is eligible to post.
+</li>
+<li>Parses the checkin to a Slack attachment.
+</li>
+<li>Adds the attachment to the checkin.
+</li>
+<li>Reports the checkin post to Redis.
+</li>
+</ol>
+
+  </section>
+</div>
+<div class="detail" id="report_checkin_type/1">
+  <div class="detail-header">
+    <a href="#report_checkin_type/1" class="detail-link" title="Link to this function">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">report_checkin_type(arg)</span>
+    
+      <a href="https://github.com/nicksergeant/slacktapped/blob/master/lib/checkins.ex#L505" class="view-source" rel="help" title="View Source">
+       <i class="icon-code"></i>
+     </a>
+    
+    
+  </div>
+  
+  <section class="docstring">
+    <p>Reports that a checkin was posted to Slack by setting a Redis key. There are
+two possible Redis keys indicating a post was made:</p>
+<ol>
+<li>[slacktapped-instance-name]:[checkin_id]:with-image
+</li>
+<li>[slacktapped-instance-name]:[checkin_id]:without-image
+</li>
+</ol>
+<p>Already-posted checkins that were previously posted without an image are
+posted again indicating that the user added an image to the checkin. If a
+record exists for the checkin with an image, the checkin is not posted again.</p>
+<h2 id="report_checkin_type/1-examples" class="section-heading">
+  <a href="#report_checkin_type/1-examples" class="hover-link"><i class="icon-link"></i></a>
+  Examples
+</h2>
+
+<pre><code class="iex elixir">iex&gt; Slacktapped.Checkins.report_checkin_type({:ok, %{}})
+{:ok, %{&quot;reported_as&quot; =&gt; &quot;without-image&quot;}}
+
+iex&gt; Slacktapped.Checkins.report_checkin_type({:ok, %{
+...&gt;   &quot;media&quot; =&gt; %{
+...&gt;     &quot;items&quot; =&gt; [
+...&gt;       %{
+...&gt;         &quot;photo&quot; =&gt; %{
+...&gt;           &quot;photo_id&quot; =&gt; 987,
+...&gt;           &quot;photo_img_lg&quot; =&gt; &quot;http://path/to/beer/image&quot;
+...&gt;         }
+...&gt;       }
+...&gt;     ]
+...&gt;   }
+...&gt; }})
+{:ok, %{
+  &quot;reported_as&quot; =&gt; &quot;with-image&quot;,
+  &quot;media&quot; =&gt; %{
+    &quot;items&quot; =&gt; [
+      %{
+        &quot;photo&quot; =&gt; %{
+          &quot;photo_id&quot; =&gt; 987,
+          &quot;photo_img_lg&quot; =&gt; &quot;http://path/to/beer/image&quot;
+        }
+      }
+    ]
+  }
+}}</code></pre>
+
+  </section>
+</div>
+
+        </section>
+      
+
+      
+
+      
+          <footer class="footer">
+        <p>
+          <span class="line">
+            Built using
+            <a href="https://github.com/elixir-lang/ex_doc" title="ExDoc" rel="help" target="_blank">ExDoc</a> (v0.13.1),
+          </span>
+          <span class="line">
+            designed by
+            <a href="https://twitter.com/dignifiedquire" target="_blank" title="@dignifiedquire">Friedel Ziegelmayer</a>.
+            </span>
+        </p>
+        <button class="night-mode-toggle" />
+      </footer>
+    </div>
+  </div>
+</section>
+</div>
+  <script src="dist/app-95540a96e6.js"></script>
+  </body>
+</html>
+

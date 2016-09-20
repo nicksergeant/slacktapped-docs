@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="ExDoc v0.13.1">
+    <title>Readme – Slacktapped v1.0.0</title>
+    <link rel="stylesheet" href="dist/app-7e84850c37.css" />
+    
+    <script src="dist/sidebar_items.js"></script>
+  </head>
+  <body data-type="extras">
+    <script>if(localStorage.getItem('night-mode')) document.body.className += ' night-mode';</script>
+
+<div class="main">
+<button class="sidebar-toggle">
+  <i class="icon-menu"></i>
+</button>
+<section class="sidebar">
+
+  
+  <a href="readme.html" class="sidebar-projectLink">
+    <div class="sidebar-projectDetails">
+      <h1 class="sidebar-projectName">
+        Slacktapped
+      </h1>
+      <h2 class="sidebar-projectVersion">
+        v1.0.0
+      </h2>
+    </div>
+    
+  </a>
+
+  <div class="sidebar-search">
+    <i class="icon-search"></i>
+    <input type="text" class="sidebar-searchInput" placeholder="search" autocomplete="off" />
+  </div>
+
+  <ul class="sidebar-listNav">
+    <li><a id="extras-list" href="#full-list">Pages</a></li>
+
+    
+      <li><a id="modules-list" href="#full-list">Modules</a></li>
+    
+
+    
+
+    
+  </ul>
+
+  <ul id="full-list" class="sidebar-fullList"></ul>
+  <div class="sidebar-noResults"></div>
+</section>
+
+<section class="content">
+  <div class="content-outer">
+    <div id="content" class="content-inner">
+
+
+<h1>Slacktapped <a href="https://circleci.com/gh/nicksergeant/slacktapped"><img src="https://circleci.com/gh/nicksergeant/slacktapped.svg?style=svg" alt="CircleCI"/></a></h1>
+<p>Slacktapped is an <a href="http://elixir-lang.org/">Elixir</a> app to post <a href="https://untappd.com/">Untappd</a> activity to <a href="https://slack.com/">Slack</a>.</p>
+<p>Once installed, this bot will post checkins, badges, and comments to a Slack
+channel.</p>
+<p>It can also (<a href="#slash-commands">with additional configuration</a>)
+respond to Slack slash commands and allow users to search for beers on Untappd.</p>
+<p>The source code is available on GitHub at <a href="https://github.com/nicksergeant/slacktapped"><a href="https://github.com/nicksergeant/slacktapped">https://github.com/nicksergeant/slacktapped</a></a>.</p>
+<h2 id="setup" class="section-heading">
+  <a href="#setup" class="hover-link"><i class="icon-link"></i></a>
+  Setup
+</h2>
+
+<ol>
+<li>Apply for an <a href="https://untappd.com/api/">Untappd API application</a>.
+   Make sure you set a Callback URL for the application (any valid URL).
+</li>
+<li>Create an <a href="https://api.slack.com/incoming-webhooks">incoming webhook</a>
+   and point it to the channel of your choosing in your Slack team.
+</li>
+<li>Create a new Untappd user. This user will be a standalone user that the bot
+   will authenticate as.
+</li>
+<li>For any people whose Untappd activity you want this bot to post, have that
+   person “friend” the Untappd user created in step 3, and then accept the
+   friendship on Untappd.
+</li>
+<li><a href="https://redislabs.com/redis-cloud">Obtain</a> or deploy a Redis
+   instance. Redis is used to keep track of activity that has been posted to
+   Slack.
+</li>
+<li>With your Untappd API credentials, authenticate as your user using the
+   <a href="https://untappd.com/api/docs#authentication">“Client Side Authentication” instructions here</a>.
+   Use the provided Callback URL you specified in step 1. Make note of the
+   returned <code class="inline">access_token</code> in the URL. Currently Untappd does not expire access
+   tokens retrieved in this manner, but we may implement proper OAuth support
+   for Slacktapped in the future.
+</li>
+<li>Clone this repo and deploy to <a href="https://www.heroku.com/">Heroku</a>
+   or <a href="http://dokku.viewdocs.io/dokku/">Dokku</a>, by following the
+   instructions below. You should also be able to deploy to any system that
+   supports building applications via <a href="https://devcenter.heroku.com/articles/buildpacks">buildpacks</a>.
+</li>
+</ol>
+<h2 id="deployment" class="section-heading">
+  <a href="#deployment" class="hover-link"><i class="icon-link"></i></a>
+  Deployment
+</h2>
+
+<ol>
+<li>Do a <code class="inline">git push</code> to Heroku or your Dokku server.
+</li>
+<li>Set your environment variables:
+</li>
+</ol>
+<pre><code class="elixir">INSTANCE_NAME=&#39;&#39;         # Unique name for this Slacktapped instance.
+REDIS_HOST=&#39;&#39;            # Hostname for your Redis isntance.
+SLACK_WEBHOOK_URL=&#39;&#39;     # Your Slack incoming webhook URL.
+UNTAPPD_ACCESS_TOKEN=&#39;&#39;  # Token obtained via auth request above.
+UNTAPPD_CLIENT_ID=&#39;&#39;     # Your Untappd client ID.
+UNTAPPD_CLIENT_SECRET=&#39;&#39; # Your Untappd client secret.</code></pre>
+<p>Once you’ve deployed with the proper credentials, you should start seeing logs
+for your application indicating that the processor is running. It will poll
+Untappd every 60 seconds for new activity:</p>
+<pre><code class="elixir">[Processor] Running...
+[Processor] Done.</code></pre>
+<p>With any luck, you’ll see Untappd activity in your Slack channel:</p>
+<p><img src="http://i.nick.sg/45afb435b99b478eb4dade42567072af.png" alt="http://i.nick.sg/45afb435b99b478eb4dade42567072af.png"/></p>
+<h2 id="slash-commands" class="section-heading">
+  <a href="#slash-commands" class="hover-link"><i class="icon-link"></i></a>
+  Slash Commands
+</h2>
+
+<p>In addition to polling the Untappd API for activity, this bot also boots a web
+server that can act as a <a href="https://api.slack.com/slash-commands">Slack Slash Command</a> endpoint.</p>
+<p>Once installed, users can use the slash command to search for beers on Untappd,
+like this:</p>
+<pre><code class="elixir">/untappd dogfish 90</code></pre>
+<p><img src="http://i.nick.sg/73b251f371db440fb9872f58f044964d.png" alt="http://i.nick.sg/73b251f371db440fb9872f58f044964d.png"/></p>
+<p>By default, the slash command will respond privately to the user. It will
+respond publicly to the channel by appending <code class="inline">-public</code> to the command, like so:</p>
+<pre><code class="elixir">/untappd dogfish 90 -public</code></pre>
+<p><strong>Installation:</strong></p>
+<ol>
+<li>Create a <a href="https://api.slack.com/slash-commands">slash command</a> for
+   your Slack team.
+</li>
+<li>Ensure that your bot is running under an HTTPS endpoint (Slack requires this).
+</li>
+<li>Set the URL for the slash command to <code class="inline">https://&lt;hostname-to-bot&gt;/search</code>.
+</li>
+<li>Set the environment variable for the slash command token:
+</li>
+</ol>
+<pre><code class="elixir">UNTAPPD_SLASH_CMD_TOKEN=&#39;&#39;</code></pre>
+<h2 id="options" class="section-heading">
+  <a href="#options" class="hover-link"><i class="icon-link"></i></a>
+  Options
+</h2>
+
+<p>Badges can get a bit noisy when you’re only interested in seeing checkins and
+comments, so you can disable badge posts by setting the following environment
+variable:</p>
+<pre><code class="elixir">IGNORE_BADGES=&#39;true&#39;</code></pre>
+<h2 id="support" class="section-heading">
+  <a href="#support" class="hover-link"><i class="icon-link"></i></a>
+  Support
+</h2>
+
+<p>If you need help deploying or have an idea for a feature, <a href="https://github.com/nicksergeant/slacktapped/issues/new">create an issue</a>.</p>
+
+      <footer class="footer">
+        <p>
+          <span class="line">
+            Built using
+            <a href="https://github.com/elixir-lang/ex_doc" title="ExDoc" rel="help" target="_blank">ExDoc</a> (v0.13.1),
+          </span>
+          <span class="line">
+            designed by
+            <a href="https://twitter.com/dignifiedquire" target="_blank" title="@dignifiedquire">Friedel Ziegelmayer</a>.
+            </span>
+        </p>
+        <button class="night-mode-toggle" />
+      </footer>
+    </div>
+  </div>
+</section>
+</div>
+  <script src="dist/app-95540a96e6.js"></script>
+  </body>
+</html>
+

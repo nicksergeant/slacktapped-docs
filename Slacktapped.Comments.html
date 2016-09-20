@@ -1,0 +1,371 @@
+    <!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="ExDoc v0.13.1">
+    <title>Slacktapped.Comments – Slacktapped v1.0.0</title>
+    <link rel="stylesheet" href="dist/app-7e84850c37.css" />
+    
+    <script src="dist/sidebar_items.js"></script>
+  </head>
+  <body data-type="modules">
+    <script>if(localStorage.getItem('night-mode')) document.body.className += ' night-mode';</script>
+
+    <div class="main">
+<button class="sidebar-toggle">
+  <i class="icon-menu"></i>
+</button>
+<section class="sidebar">
+
+  
+  <a href="readme.html" class="sidebar-projectLink">
+    <div class="sidebar-projectDetails">
+      <h1 class="sidebar-projectName">
+        Slacktapped
+      </h1>
+      <h2 class="sidebar-projectVersion">
+        v1.0.0
+      </h2>
+    </div>
+    
+  </a>
+
+  <div class="sidebar-search">
+    <i class="icon-search"></i>
+    <input type="text" class="sidebar-searchInput" placeholder="search" autocomplete="off" />
+  </div>
+
+  <ul class="sidebar-listNav">
+    <li><a id="extras-list" href="#full-list">Pages</a></li>
+
+    
+      <li><a id="modules-list" href="#full-list">Modules</a></li>
+    
+
+    
+
+    
+  </ul>
+
+  <ul id="full-list" class="sidebar-fullList"></ul>
+  <div class="sidebar-noResults"></div>
+</section>
+
+<section class="content">
+  <div class="content-outer">
+    <div id="content" class="content-inner">
+
+
+      <h1>
+        <small class="visible-xs">Slacktapped v1.0.0</small>
+        Slacktapped.Comments
+        
+        
+          <a href="https://github.com/nicksergeant/slacktapped/blob/master/lib/comments.ex#L1" title="View Source" class="view-source" rel="help">
+            <i class="icon-code"></i>
+          </a>
+        
+      </h1>
+
+      
+
+      
+        <section id="summary" class="details-list">
+          <h1 class="section-heading">
+            <a class="hover-link" href="#summary">
+              <i class="icon-link"></i>
+            </a>
+            Summary
+          </h1>
+          
+
+          
+  <div class="summary-functions summary">
+    <h2>
+      <a href="#functions">Functions</a>
+    </h2>
+    <div class="summary-row">
+  <div class="summary-signature">
+    <a href="#is_eligible_comment/1">is_eligible_comment(comment)</a>
+  </div>
+  
+    <div class="summary-synopsis"><p>Determines if a comment is eligible to be posted to Slack</p>
+</div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#parse_comment/2">parse_comment(comment, checkin)</a>
+  </div>
+  
+    <div class="summary-synopsis"><p>Parses a comment into an attachment for Slack</p>
+</div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#process_comment/2">process_comment(comment, checkin)</a>
+  </div>
+  
+    <div class="summary-synopsis"><p>Reports the comment as posted to Redis, and returns a parsed comment as
+an attachment for Slack</p>
+</div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#process_comments/1">process_comments(checkin)</a>
+  </div>
+  
+    <div class="summary-synopsis"><p>Processes a checkins comments</p>
+</div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#report_comment/1">report_comment(comment)</a>
+  </div>
+  
+    <div class="summary-synopsis"><p>Reports that a comment was posted to Slack by setting a Redis key</p>
+</div>
+  
+</div>
+
+  </div>
+
+
+          
+
+          
+
+        </section>
+      
+
+      
+
+      
+        <section id="functions" class="details-list">
+          <h1 class="section-heading">
+            <a class="hover-link" href="#functions">
+              <i class="icon-link"></i>
+            </a>
+            Functions
+          </h1>
+          <div class="detail" id="is_eligible_comment/1">
+  <div class="detail-header">
+    <a href="#is_eligible_comment/1" class="detail-link" title="Link to this function">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">is_eligible_comment(comment)</span>
+    
+      <a href="https://github.com/nicksergeant/slacktapped/blob/master/lib/comments.ex#L52" class="view-source" rel="help" title="View Source">
+       <i class="icon-code"></i>
+     </a>
+    
+    
+  </div>
+  
+  <section class="docstring">
+    <p>Determines if a comment is eligible to be posted to Slack.</p>
+<p>Comment is ineligible if we have already posted it to Slack.</p>
+<h2 id="is_eligible_comment/1-examples" class="section-heading">
+  <a href="#is_eligible_comment/1-examples" class="hover-link"><i class="icon-link"></i></a>
+  Examples
+</h2>
+
+<pre><code class="iex elixir">iex&gt; Slacktapped.Comments.is_eligible_comment(%{&quot;comment_id&quot; =&gt; 3344})
+true
+
+iex&gt; Slacktapped.Comments.is_eligible_comment(%{&quot;comment_id&quot; =&gt; 3355})
+false</code></pre>
+
+  </section>
+</div>
+<div class="detail" id="parse_comment/2">
+  <div class="detail-header">
+    <a href="#parse_comment/2" class="detail-link" title="Link to this function">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">parse_comment(comment, checkin)</span>
+    
+      <a href="https://github.com/nicksergeant/slacktapped/blob/master/lib/comments.ex#L134" class="view-source" rel="help" title="View Source">
+       <i class="icon-code"></i>
+     </a>
+    
+    
+  </div>
+  
+  <section class="docstring">
+    <p>Parses a comment into an attachment for Slack.</p>
+<h2 id="parse_comment/2-examples" class="section-heading">
+  <a href="#parse_comment/2-examples" class="hover-link"><i class="icon-link"></i></a>
+  Examples
+</h2>
+
+<pre><code class="iex elixir">iex&gt; Slacktapped.Comments.parse_comment(
+...&gt; %{
+...&gt;   &quot;comment_id&quot; =&gt; 3593,
+...&gt;   &quot;comment&quot; =&gt; &quot;Great beer!&quot;,
+...&gt;   &quot;user&quot; =&gt; %{
+...&gt;     &quot;first_name&quot; =&gt; &quot;George&quot;,
+...&gt;     &quot;last_name&quot; =&gt; &quot;C.&quot;,
+...&gt;     &quot;uid&quot; =&gt; 358,
+...&gt;     &quot;user_link&quot; =&gt; &quot;http://path/to/comment/user&quot;,
+...&gt;     &quot;user_name&quot; =&gt; &quot;george&quot;
+...&gt;   }
+...&gt; },
+...&gt; %{
+...&gt;   &quot;attachments&quot; =&gt; [],
+...&gt;   &quot;user&quot; =&gt; %{
+...&gt;     &quot;uid&quot; =&gt; 357,
+...&gt;     &quot;user_name&quot; =&gt; &quot;nicksergeant&quot;
+...&gt;   },
+...&gt;   &quot;beer&quot; =&gt; %{
+...&gt;     &quot;bid&quot; =&gt; 123,
+...&gt;     &quot;beer_name&quot; =&gt; &quot;IPA&quot;,
+...&gt;     &quot;beer_slug&quot; =&gt; &quot;two-lake-ipa&quot;
+...&gt;   },
+...&gt;   &quot;checkin_id&quot; =&gt; 567
+...&gt; })
+%{
+  &quot;color&quot; =&gt; &quot;#FFCF0B&quot;,
+  &quot;fallback&quot; =&gt; &quot;George C. commented on nicksergeant&#39;s checkin.&quot;,
+  &quot;mrkdwn_in&quot; =&gt; [&quot;text&quot;],
+  &quot;text&quot; =&gt; &quot;&lt;http://path/to/comment/user|George C.&gt; commented on &quot; &lt;&gt;
+    &quot;&lt;https://untappd.com/user/nicksergeant/checkin/567|nicksergeant&#39;s &quot; &lt;&gt;
+    &quot;checkin&gt; of &lt;https://untappd.com/b/two-lake-ipa/123|IPA&gt; and &quot; &lt;&gt;
+    &quot;said:\n&gt;Great beer!&quot;
+}</code></pre>
+<p>If the checkin’s owner posts a comment on their own checkin:</p>
+<pre><code class="iex elixir">iex&gt; Slacktapped.Comments.parse_comment(
+...&gt; %{
+...&gt;   &quot;comment_id&quot; =&gt; 3593,
+...&gt;   &quot;comment&quot; =&gt; &quot;I loved this!&quot;,
+...&gt;   &quot;user&quot; =&gt; %{
+...&gt;     &quot;uid&quot; =&gt; 357,
+...&gt;     &quot;user_name&quot; =&gt; &quot;nicksergeant&quot;
+...&gt;   }
+...&gt; },
+...&gt; %{
+...&gt;   &quot;attachments&quot; =&gt; [],
+...&gt;   &quot;user&quot; =&gt; %{
+...&gt;     &quot;uid&quot; =&gt; 357,
+...&gt;     &quot;user_name&quot; =&gt; &quot;nicksergeant&quot;
+...&gt;   },
+...&gt;   &quot;beer&quot; =&gt; %{
+...&gt;     &quot;bid&quot; =&gt; 123,
+...&gt;     &quot;beer_name&quot; =&gt; &quot;IPA&quot;,
+...&gt;     &quot;beer_slug&quot; =&gt; &quot;two-lake-ipa&quot;
+...&gt;   },
+...&gt;   &quot;checkin_id&quot; =&gt; 567
+...&gt; })
+%{
+  &quot;color&quot; =&gt; &quot;#FFCF0B&quot;,
+  &quot;fallback&quot; =&gt; &quot;nicksergeant commented on nicksergeant&#39;s checkin.&quot;,
+  &quot;mrkdwn_in&quot; =&gt; [&quot;text&quot;],
+  &quot;text&quot; =&gt; &quot;&lt;|nicksergeant&gt; commented on &quot; &lt;&gt;
+    &quot;&lt;https://untappd.com/user/nicksergeant/checkin/567|their &quot; &lt;&gt;
+    &quot;checkin&gt; of &lt;https://untappd.com/b/two-lake-ipa/123|IPA&gt; and &quot; &lt;&gt;
+    &quot;said:\n&gt;I loved this!&quot;
+}</code></pre>
+
+  </section>
+</div>
+<div class="detail" id="process_comment/2">
+  <div class="detail-header">
+    <a href="#process_comment/2" class="detail-link" title="Link to this function">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">process_comment(comment, checkin)</span>
+    
+      <a href="https://github.com/nicksergeant/slacktapped/blob/master/lib/comments.ex#L33" class="view-source" rel="help" title="View Source">
+       <i class="icon-code"></i>
+     </a>
+    
+    
+  </div>
+  
+  <section class="docstring">
+    <p>Reports the comment as posted to Redis, and returns a parsed comment as
+an attachment for Slack.</p>
+
+  </section>
+</div>
+<div class="detail" id="process_comments/1">
+  <div class="detail-header">
+    <a href="#process_comments/1" class="detail-link" title="Link to this function">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">process_comments(checkin)</span>
+    
+      <a href="https://github.com/nicksergeant/slacktapped/blob/master/lib/comments.ex#L13" class="view-source" rel="help" title="View Source">
+       <i class="icon-code"></i>
+     </a>
+    
+    
+  </div>
+  
+  <section class="docstring">
+    <p>Processes a checkins comments.</p>
+<p>Loops through all comments and determines if they are eligible to be
+posted to Slack. If they are, they’re processed and added to the
+checkins attachments.</p>
+
+  </section>
+</div>
+<div class="detail" id="report_comment/1">
+  <div class="detail-header">
+    <a href="#report_comment/1" class="detail-link" title="Link to this function">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">report_comment(comment)</span>
+    
+      <a href="https://github.com/nicksergeant/slacktapped/blob/master/lib/comments.ex#L171" class="view-source" rel="help" title="View Source">
+       <i class="icon-code"></i>
+     </a>
+    
+    
+  </div>
+  
+  <section class="docstring">
+    <p>Reports that a comment was posted to Slack by setting a Redis key.</p>
+<h2 id="report_comment/1-example" class="section-heading">
+  <a href="#report_comment/1-example" class="hover-link"><i class="icon-link"></i></a>
+  Example
+</h2>
+
+<pre><code class="iex elixir">iex&gt; Slacktapped.Comments.report_comment(%{&quot;comment_id&quot; =&gt; 345})
+{:ok, %{&quot;comment_id&quot; =&gt; 345}}</code></pre>
+
+  </section>
+</div>
+
+        </section>
+      
+
+      
+
+      
+          <footer class="footer">
+        <p>
+          <span class="line">
+            Built using
+            <a href="https://github.com/elixir-lang/ex_doc" title="ExDoc" rel="help" target="_blank">ExDoc</a> (v0.13.1),
+          </span>
+          <span class="line">
+            designed by
+            <a href="https://twitter.com/dignifiedquire" target="_blank" title="@dignifiedquire">Friedel Ziegelmayer</a>.
+            </span>
+        </p>
+        <button class="night-mode-toggle" />
+      </footer>
+    </div>
+  </div>
+</section>
+</div>
+  <script src="dist/app-95540a96e6.js"></script>
+  </body>
+</html>
+
