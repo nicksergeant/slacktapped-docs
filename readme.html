@@ -114,7 +114,7 @@ respond to Slack slash commands and allow users to search for beers on Untappd.<
 </li>
 </ol>
 <pre><code class="elixir">INSTANCE_NAME=&#39;&#39;         # Unique name for this Slacktapped instance.
-REDIS_HOST=&#39;&#39;            # Hostname for your Redis isntance.
+REDIS_URI=&#39;&#39;             # URI for your Redis isntance.
 SLACK_WEBHOOK_URL=&#39;&#39;     # Your Slack incoming webhook URL.
 UNTAPPD_ACCESS_TOKEN=&#39;&#39;  # Token obtained via auth request above.
 UNTAPPD_CLIENT_ID=&#39;&#39;     # Your Untappd client ID.
@@ -162,6 +162,8 @@ respond publicly to the channel by appending <code class="inline">-public</code>
 comments, so you can disable badge posts by setting the following environment
 variable:</p>
 <pre><code class="elixir">IGNORE_BADGES=&#39;true&#39;</code></pre>
+<p>To disable comments:</p>
+<pre><code class="elixir">IGNORE_COMMENTS=&#39;true&#39;</code></pre>
 <h2 id="support" class="section-heading">
   <a href="#support" class="hover-link"><i class="icon-link"></i></a>
   Support
